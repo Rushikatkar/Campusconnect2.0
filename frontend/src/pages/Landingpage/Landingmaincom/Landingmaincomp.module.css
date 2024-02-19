@@ -1,0 +1,236 @@
+.all {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.container {
+    background: linear-gradient(to right, #FFECD2, #FCB69F);
+    color: black;
+}
+
+.navbar {
+    width: 53%;
+}
+
+nav {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    height: 60px;
+    align-items: center;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+}
+
+nav ul li {
+    list-style: none;
+    margin: 0 23px;
+    text-decoration: none;
+}
+
+nav ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    color: rgb(127, 127, 210);
+    font-size: 1.01rem;
+}
+
+.img {
+    width: 47%;
+}
+
+.left {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.headline {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 150px 0 0 70px;
+}
+
+.headline2 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0px 0 0 70px;
+}
+
+
+/* button css */
+.bttn {
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 6px 6px 12px #c5c5c5,
+        -6px -6px 12px #ffffff;
+}
+
+button {
+    cursor: pointer;
+    font-weight: 700;
+    font-family: Helvetica, "sans-serif";
+    transition: all .2s;
+    padding: 10px 20px;
+    border-radius: 100px;
+    background: rgb(248, 118, 3);
+    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+button:hover {
+    background: rgb(248, 118, 3);
+}
+
+button>svg {
+    width: 34px;
+    margin-left: 10px;
+    transition: transform .3s ease-in-out;
+}
+
+button:hover svg {
+    transform: translateX(5px);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+
+@media screen and (max-width: 900px) and (min-width:550px) {
+    .all {
+        flex-direction: column;
+    }
+
+    .navbar {
+        height: 450px;
+        width: 100%;
+        background: linear-gradient(to right, #FFECD2, #FCB69F)
+    }
+
+    .headline {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 60px 0 0 40px;
+    }
+
+    .headline2 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 0px 0 0 35px;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        background-color: rgb(5, 37, 86);
+        color: white;
+    }
+
+    nav ul li b {
+        color: white;
+    }
+
+    .img {
+        height: auto;
+        width: 100%;
+    }
+
+
+    button {
+        cursor: pointer;
+        font-weight: 700;
+        font-family: Helvetica, "sans-serif";
+        transition: all .2s;
+        padding: 5px 10px;
+        border-radius: 100px;
+        background: rgb(248, 118, 3);
+        color: black;
+        border: 1px solid transparent;
+        display: flex;
+        align-items: center;
+        font-size: 8px;
+    }
+}
+
+
+@media screen and (max-width: 550px) {
+    .all {
+        flex-direction: column;
+    }
+
+    .navbar {
+        height: 450px;
+        width: 100%;
+        background: linear-gradient(to right, #FFECD2, #FCB69F)
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        background-color: rgb(5, 37, 86);
+        color: white;
+    }
+
+    nav ul li b {
+        color: white;
+    }
+
+
+    .headline {
+        font-size: 2rem;
+        font-weight: bold;
+        margin: 45px 0 0 28px;
+    }
+
+    .headline2 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 0px 0 0 28px;
+    }
+
+    button {
+        cursor: pointer;
+        font-weight: 700;
+        font-family: Helvetica, "sans-serif";
+        transition: all .2s;
+        padding: 5px 5px;
+        border-radius: 100px;
+        background: rgb(248, 118, 3);
+        color: black;
+        border: 1px solid;
+        display: flex;
+        align-items: center;
+        font-size: 4px;
+    }
+
+    button:hover {
+        background: rgb(248, 118, 3);
+    }
+
+    .bttn {
+        font-size: 0.9rem;
+        font-weight: bold;
+        box-shadow: 6px 6px 12px #c5c5c5,
+            -6px -6px 12px #ffffff;
+    }
+
+    .img {
+        height: auto;
+        width: 100%;
+    }
+}
