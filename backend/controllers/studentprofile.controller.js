@@ -3,50 +3,62 @@ const { uploadImage } = require("../middlewares/uploadImage");
 
 const studentProfileController = async (req, res) => {
     try {
-        const {
-            userId,
-            student_name,
-            date_of_birth,
-            address,
-            college_name,
-            marksofssc,
-            marksofhsc,
-            diploma_cgpa,
-            diploma_backlogs,
-            degree_cgpa,
-            degree_backlogs
-        } = req.body;
+        // This middleware should be applied before the controller
+        uploadImage(req, res, async (err) => {
+            if (err) {
+                return res.status(400).json({ error: err.message });
+            }
 
-        // Construct image object
-        const image = {
-            data: req.file.buffer,
-            contentType: req.file.mimetype
-        };
+            try {
+                const {
+                    userId,
+                    student_name,
+                    date_of_birth,
+                    address,
+                    college_name,
+                    marksofssc,
+                    marksofhsc,
+                    diploma_cgpa,
+                    diploma_backlogs,
+                    degree_cgpa,
+                    degree_backlogs
+                } = req.body;
 
-        // Create StudentProfileModel object with form data and image
-        const input = new StudentProfileModel({
-            userId,
-            student_name,
-            date_of_birth,
-            address,
-            college_name,
-            marksofssc,
-            marksofhsc,
-            diploma_cgpa,
-            diploma_backlogs,
-            degree_cgpa,
-            degree_backlogs,
-            image
+                // Construct image object
+                const image = {
+                    data: req.file.buffer,
+                    contentType: req.file.mimetype
+                };
+
+                // Create StudentProfileModel object with form data and image
+                const input = new StudentProfileModel({
+                    userId,
+                    student_name,
+                    date_of_birth,
+                    address,
+                    college_name,
+                    marksofssc,
+                    marksofhsc,
+                    diploma_cgpa,
+                    diploma_backlogs,
+                    degree_cgpa,
+                    degree_backlogs,
+                    image
+                });
+
+                // Save the data to the database
+                const result = await input.save();
+                console.log("Data saved:", result);
+
+                res.status(200).json({ message: "Data saved successfully" });
+            } catch (error) {
+                console.error("Error saving data:", error);
+                res.status(500).json({ error: "An error occurred while saving data" });
+            }
         });
-
-        // Save the data to the database
-        const result = await input.save();
-        console.log("Data saved:", result);
-
-        res.status(200).json({ message: "Data saved successfully" });
     } catch (error) {
-        console.error("Error saving data:", error);
-        res.status(500).json({ error: "An error occurred while saving data" });
+        console.error("Error in studentProfileController:", error);
+        res.status(500).json({ error: "An error occurred in the controller" });
     }
 };
 
@@ -67,7 +79,6 @@ const findStudentProfileController = async (req, res) => {
         res.status(500).json({ error: "An error occurred while searching for user profile" });
     }
 };
-
 
 module.exports = {
     studentProfileController,

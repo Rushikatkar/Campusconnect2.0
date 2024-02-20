@@ -8,30 +8,46 @@ import Footer from '../../../components/Footer/Footer';
 
 const Viewprofile = () => {
     const [userData, setUserData] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false); // Track image loading state
 
     useEffect(() => {
-        // Function to retrieve user ID from cookies
         const getUserIdFromToken = () => {
-            const accessToken = Cookies.get('accessToken'); // Retrieve access token from cookies
+            const accessToken = Cookies.get('accessToken');
             if (accessToken) {
                 const decodedToken = jwtDecode(accessToken);
-                console.log("userid is " + decodedToken._id); // Log userId before making the request
+                console.log("userid is " + decodedToken._id);
                 return decodedToken._id;
             }
             return null;
         };
 
-        const userId = getUserIdFromToken(); // Get user ID from access token
+        const userId = getUserIdFromToken();
         if (userId) {
-            // Fetch user data from the backend API using the userId from the URL query string
+            setIsLoading(true); // Set loading state to true
             axios.get(`http://localhost:5000/api/profile?userId=${userId}`)
                 .then(response => {
-                    // Assuming the response.data contains user data
-                    setUserData(response.data.userProfile);
-                    console.log(response.data); // Access userProfile object from response data
+                    const userProfile = response.data.userProfile;
+                    if (userProfile && userProfile.image && userProfile.image.data) {
+                        try {
+                            const imageType = 'image/jpeg'; // Replace with the actual image type
+                            const imageDataArray = new Uint8Array(userProfile.image.data.data);
+                            const imageBase64 = btoa(String.fromCharCode.apply(null, imageDataArray));
+                            setImageUrl(`data:${imageType};base64,${imageBase64}`);
+                        } catch (error) {
+                            console.error('Error processing image:', error);
+                            // Handle image processing errors
+                        }
+                    }
+                    setUserData(userProfile);
                 })
                 .catch(error => {
                     console.error('Error fetching user data:', error);
+                    // Handle API errors gracefully
+                    // (e.g., display an error message or retry)
+                })
+                .finally(() => {
+                    setIsLoading(false); // Set loading state to false
                 });
         }
     }, []);
@@ -45,43 +61,43 @@ const Viewprofile = () => {
                 <h2 className="text-2xl font-semibold mb-6">User Profile</h2>
                 {userData ? (
                     <>
-                        {/* Display user data */}
+                        <img src={imageUrl} alt='User Image' style={{ width: '100px' }} />
+
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Student Name</label>
                             <p>{userData.student_name}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Date of Birth</label>
-                            <p>{userData.date_of_birth}</p> {/* Adjust key */}
+                            <p>{userData.date_of_birth}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Address</label>
                             <p>{userData.address}</p>
                         </div>
-
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">College Name</label>
-                            <p>{userData.college_name}</p> {/* Adjust key */}
+                            <p>{userData.college_name}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Marks of SSC</label>
-                            <p>{userData.marksofssc}</p> {/* Adjust key */}
+                            <p>{userData.marksofssc}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Diploma CGPA</label>
-                            <p>{userData.diploma_cgpa}</p> {/* Adjust key */}
+                            <p>{userData.diploma_cgpa}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Diploma Backlogs</label>
-                            <p>{userData.diploma_backlogs}</p> {/* Adjust key */}
+                            <p>{userData.diploma_backlogs}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Degree CGPA</label>
-                            <p>{userData.degree_cgpa}</p> {/* Adjust key */}
+                            <p>{userData.degree_cgpa}</p>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2">Degree Backlogs</label>
-                            <p>{userData.degree_backlogs}</p> {/* Adjust key */}
+                            <p>{userData.degree_backlogs}</p>
                         </div>
                     </>
                 ) : (

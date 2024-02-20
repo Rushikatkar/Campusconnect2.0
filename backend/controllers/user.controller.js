@@ -1,5 +1,5 @@
 const asyncHandler = require("../utils/asyncHandler.js");
-const ApiError = require("../utils/ApiError.js");
+const {ApiError} = require("../utils/ApiError.js");
 const User = require("../models/user.model.js");
 // import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const ApiResponse = require("../utils/ApiResponse.js");

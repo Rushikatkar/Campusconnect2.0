@@ -24,6 +24,7 @@ const UserProfileForm = () => {
     }, []);
 
     const [formData, setFormData] = useState({
+        userId: '',
         studentName: '',
         dateOfBirth: '',
         address: '',
@@ -60,17 +61,24 @@ const UserProfileForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const formDataObject = { ...formData };
-            if (formDataObject.image) {
-                formDataObject.image = formDataObject.image.name;
+            const formDataObject = { ...formData, userId }; // Include userId in form data
+            const formDataToSend = new FormData();
+
+            for (const key in formDataObject) {
+                if (key === 'image') {
+                    formDataToSend.append('image', formDataObject[key][0]); // Assuming you're only allowing one file to be uploaded
+                } else {
+                    formDataToSend.append(key, formDataObject[key]);
+                }
             }
 
             const response = await fetch('http://localhost:5000/api/studentprofile', {
                 method: 'POST',
+                body: formDataToSend,
                 headers: {
-                    'Content-Type': 'application/json',
+                    // No need to set Content-Type, the browser will do it for you
+                    // 'Content-Type': 'multipart/form-data',
                 },
-                body: JSON.stringify({ ...formDataObject, userId }),
             });
 
             if (response.ok) {
@@ -83,6 +91,7 @@ const UserProfileForm = () => {
             console.error('Error submitting form:', error);
         }
     };
+
     return (
         <>
             <div>
