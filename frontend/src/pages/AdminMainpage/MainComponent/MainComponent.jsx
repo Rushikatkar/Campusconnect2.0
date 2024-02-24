@@ -66,15 +66,28 @@ const MainComponent = () => {
                 </div>
                 <div className="grid gap-6">
                     {studentData.map(student => (
-                        <div key={student._id} className="bg-white p-6 rounded-md shadow-md">
-                            <h3 className="text-xl font-semibold mb-2">{student.student_name}</h3>
-                            <p className="text-gray-600 mb-2">Date of Birth: {student.date_of_birth}</p>
-                            <p className="text-gray-600 mb-2">Address: {student.address}</p>
-                            <p className="text-gray-600 mb-2">Marks of SSC: {student.marksofssc}</p>
-                            <p className="text-gray-600 mb-2">Diploma CGPA: {student.diploma_cgpa}</p>
-                            <p className="text-gray-600 mb-2">Diploma BACKLOG: {student.diploma_backlogs}</p>
-                            <p className="text-gray-600 mb-2">Degree CGPA: {student.degree_cgpa}</p>
-                            <p className="text-gray-600 mb-2">Degree BACKLOG: {student.degree_backlogs}</p>
+                        <div key={student._id} className="bg-white p-6 rounded-md shadow-md flex items-center">
+                            <div className="flex-grow">
+                                <h3 className="text-xl font-semibold mb-2">{student.student_name}</h3>
+                                <p className="text-gray-600 mb-2"><strong>Date of Birth:</strong> {student.date_of_birth}</p>
+                                <p className="text-gray-600 mb-2"><strong>Address:</strong> {student.address}</p>
+                                <p className="text-gray-600 mb-2"><strong>Marks of SSC:</strong> {student.marksofssc}</p>
+                                <p className="text-gray-600 mb-2"><strong>Marks of HSC:</strong> {student.marksofhsc}</p>
+                                <p className="text-gray-600 mb-2"><strong>Diploma CGPA:</strong> {student.diploma_cgpa}</p>
+                                <p className="text-gray-600 mb-2"><strong>Diploma BACKLOG:</strong> {student.diploma_backlogs}</p>
+                                <p className="text-gray-600 mb-2"><strong>Degree CGPA:</strong> {student.degree_cgpa}</p>
+                                <p className="text-gray-600 mb-2"><strong>Degree BACKLOG:</strong> {student.degree_backlogs}</p>
+                            </div>
+
+                            <div className="ml-4">
+                                {student.avatar ? (
+                                    <img src={student.avatar} alt="Student Image" className="w-44 h-44 rounded-full" />
+                                ) : (
+                                    <div className="w-44 h-44 rounded-full bg-gray-200 flex items-center justify-center">
+                                        <span className="text-gray-400 text-lg">User Image</span>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>

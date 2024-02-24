@@ -16,10 +16,8 @@ const ProfileSchema = new mongoose.Schema({
     diploma_backlogs: Number,
     degree_cgpa: Number,
     degree_backlogs: Number,
-    // Add a field for storing image data
-    image: {
-        data: Buffer,
-        contentType: String
+    avatar: {
+        type: String, // cloudinary url
     }
 });
 

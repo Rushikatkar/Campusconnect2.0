@@ -1,67 +1,51 @@
 const StudentProfileModel = require("../models/studentprofileModel");
-const { uploadImage } = require("../middlewares/uploadImage");
+const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
 const studentProfileController = async (req, res) => {
     try {
-        // This middleware should be applied before the controller
-        uploadImage(req, res, async (err) => {
-            if (err) {
-                return res.status(400).json({ error: err.message });
-            }
+        const { userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs } = req.body;
 
-            try {
-                const {
-                    userId,
-                    student_name,
-                    date_of_birth,
-                    address,
-                    college_name,
-                    marksofssc,
-                    marksofhsc,
-                    diploma_cgpa,
-                    diploma_backlogs,
-                    degree_cgpa,
-                    degree_backlogs
-                } = req.body;
+        console.log(student_name);
+        // Check if required fields are empty
+        if ([userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs].some((field) => field === undefined || field.trim() === "")) {
+            return res.status(400).json({ error: "All fields are required" });
+        }
 
-                // Construct image object
-                const image = {
-                    data: req.file.buffer,
-                    contentType: req.file.mimetype
-                };
+        // Check if avatar file is provided
+        const avatarLocalPath = req.files?.avatar[0]?.path;
+        if (!avatarLocalPath) {
+            return res.status(400).json({ error: "Avatar file is required" });
+        }
 
-                // Create StudentProfileModel object with form data and image
-                const input = new StudentProfileModel({
-                    userId,
-                    student_name,
-                    date_of_birth,
-                    address,
-                    college_name,
-                    marksofssc,
-                    marksofhsc,
-                    diploma_cgpa,
-                    diploma_backlogs,
-                    degree_cgpa,
-                    degree_backlogs,
-                    image
-                });
+        // Upload image to Cloudinary
+        const avatar = await uploadOnCloudinary(avatarLocalPath);
 
-                // Save the data to the database
-                const result = await input.save();
-                console.log("Data saved:", result);
-
-                res.status(200).json({ message: "Data saved successfully" });
-            } catch (error) {
-                console.error("Error saving data:", error);
-                res.status(500).json({ error: "An error occurred while saving data" });
-            }
+        // Create StudentProfileModel object with form data and image URL from Cloudinary
+        const input = new StudentProfileModel({
+            userId,
+            student_name,
+            date_of_birth,
+            address,
+            college_name,
+            marksofssc,
+            marksofhsc,
+            diploma_cgpa,
+            diploma_backlogs,
+            degree_cgpa,
+            degree_backlogs,
+            avatar: avatar.url // Assuming the field in the schema is named "avatar"
         });
+
+        // Save the data to the database
+        const result = await input.save();
+        console.log("Data saved:", result);
+
+        res.status(200).json({ message: "Data saved successfully" });
     } catch (error) {
-        console.error("Error in studentProfileController:", error);
-        res.status(500).json({ error: "An error occurred in the controller" });
+        console.error("Error saving data:", error);
+        res.status(500).json({ error: "An error occurred while saving data" });
     }
 };
-
 const findStudentProfileController = async (req, res) => {
     try {
         const { userId } = req.query; // Retrieve userId from query parameters

@@ -30,11 +30,12 @@ const UserProfileForm = () => {
         address: '',
         collegeName: '',
         marksOfSSC: '',
+        marksOfHSC: '',
         diplomaCGPA: '',
         diplomaBacklogs: '',
         degreeCGPA: '',
         degreeBacklogs: '',
-        image: null
+        avatar: null
     });
 
     const handleChange = (e) => {
@@ -45,13 +46,14 @@ const UserProfileForm = () => {
             address: 'address',
             collegeName: 'college_name',
             marksOfSSC: 'marksofssc',
+            marksOfHSC: 'marksofhsc',
             diplomaCGPA: 'diploma_cgpa',
             diplomaBacklogs: 'diploma_backlogs',
             degreeCGPA: 'degree_cgpa',
             degreeBacklogs: 'degree_backlogs',
         };
 
-        if (name === 'image') {
+        if (name === 'avatar') {
             setFormData({ ...formData, [name]: e.target.files });
         } else {
             setFormData({ ...formData, [name]: value, [backendVariableNames[name]]: value });
@@ -65,8 +67,8 @@ const UserProfileForm = () => {
             const formDataToSend = new FormData();
 
             for (const key in formDataObject) {
-                if (key === 'image') {
-                    formDataToSend.append('image', formDataObject[key][0]); // Assuming you're only allowing one file to be uploaded
+                if (key === 'avatar') {
+                    formDataToSend.append('avatar', formDataObject[key][0]); // Assuming you're only allowing one file to be uploaded
                 } else {
                     formDataToSend.append(key, formDataObject[key]);
                 }
@@ -174,6 +176,21 @@ const UserProfileForm = () => {
                         />
                     </div>
                     <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="marksOfSSC">
+                            Marks of HSC
+                        </label>
+                        <input
+                            type="number"
+                            id="marksOfHSC"
+                            name="marksOfHSC"
+                            value={formData.marksOfHSC}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Enter marks of HSC"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="diplomaCGPA">
                             Diploma CGPA
                         </label>
@@ -237,7 +254,7 @@ const UserProfileForm = () => {
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
                             Profile Image
                         </label>
-                        <input type="file" id="image" name="image" onChange={handleChange} className="w-full border border-gray-300 p-2 rounded-md" />
+                        <input type="file" id="image" name="avatar" onChange={handleChange} className="w-full border border-gray-300 p-2 rounded-md" />
                     </div>
                     <div className="mt-6">
                         <button
