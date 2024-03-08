@@ -18,6 +18,10 @@ const ProfileSchema = new mongoose.Schema({
     degree_backlogs: Number,
     avatar: {
         type: String, // cloudinary url
+    },
+    resume: {
+        data: Buffer, // Store binary data
+        contentType: String // Mime type of the file
     }
 });
 

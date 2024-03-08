@@ -56,6 +56,55 @@ const MainComponent = () => {
             });
     };
 
+    const viewResume = (resume) => {
+        // Create Blob from base64 string
+        const blob = b64toBlob(resume.data.data, resume.contentType);
+
+        // Create URL for the Blob
+        const url = URL.createObjectURL(blob);
+
+        // Open URL in a new tab
+        window.open(url, '_blank');
+    };
+
+    const downloadResume = (resume) => {
+        // Create Blob from base64 string
+        const blob = b64toBlob(resume.data.data, resume.contentType);
+
+        // Create download link
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'resume.pdf');
+
+        // Append link to body and trigger download
+        document.body.appendChild(link);
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
+
+    const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, { type: contentType });
+    };
+
     return (
         <>
             <div className="container mx-auto mt-8">
@@ -78,6 +127,17 @@ const MainComponent = () => {
                                 <p className="text-gray-600 mb-2"><strong>Degree CGPA:</strong> {student.degree_cgpa}</p>
                                 <p className="text-gray-600 mb-2"><strong>Degree BACKLOG:</strong> {student.degree_backlogs}</p>
                             </div>
+
+                            {student.resume && student.resume.contentType && (
+                                <div className="ml-4">
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => viewResume(student.resume)}>
+                                        View Resume
+                                    </button>
+                                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={() => downloadResume(student.resume)}>
+                                        Download Resume
+                                    </button>
+                                </div>
+                            )}
 
                             <div className="ml-4">
                                 {student.avatar ? (

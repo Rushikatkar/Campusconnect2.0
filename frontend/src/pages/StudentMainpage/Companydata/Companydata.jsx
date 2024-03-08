@@ -3,22 +3,23 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
+import companycss from './Companydata.module.css';
 
 function Companydata() {
     const [companyData, setCompanyData] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [userData, setUserData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [isFiltering, setIsFiltering] = useState(false); // State to control filtering
+    const [isFiltering, setIsFiltering] = useState(false);
     const [filteredCompanies, setFilteredCompanies] = useState([]);
+    const [dataCount, setDataCount] = useState(0);
 
     useEffect(() => {
-        // Retrieve filtering state from local storage
         const filteringState = localStorage.getItem('filteringState');
         if (filteringState !== null) {
             setIsFiltering(JSON.parse(filteringState));
         } else {
-            setIsFiltering(false); // Set default filtering state
+            setIsFiltering(false);
         }
 
         const getUserIdFromToken = () => {
@@ -48,75 +49,89 @@ function Companydata() {
     }, []);
 
     useEffect(() => {
-        // Fetch data from the new backend API endpoint
         axios.get('http://localhost:5000/api/companyinfo')
             .then(response => {
-                // Use response.data directly, no need for response.json()
                 setCompanyData(response.data);
             })
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     useEffect(() => {
-        console.log("Filtering State:", isFiltering);
-        console.log("User Data:", userData);
-        console.log("Company Data:", companyData);
+        setDataCount(filteredCompanies.length); // Update data count based on filtered data
+    }, [filteredCompanies]);
 
+    useEffect(() => {
         if (!isFiltering || !userData) {
-            // If filtering is off or user data is not available, set filtered companies to all companies
-            console.log("No Filtering Applied");
             setFilteredCompanies(companyData);
         } else {
-            // Apply filtering criteria and update filtered companies accordingly
-            console.log("Applying Filtering Criteria");
-
             const filteredData = companyData.filter(company => {
                 if (company.companyInformation.marks > userData.marksofssc) {
-                    return false; // Skip if marks are greater than user's marks
+                    return false;
                 }
 
                 if (company.companyInformation.cgpa > userData.cgpa) {
-                    return false; // Skip if CGPA is greater than user's CGPA
+                    return false;
                 }
 
                 if (company.companyInformation.backlogs < userData.degree_backlogs) {
-                    return false; // Skip if backlogs are less than user's degree backlogs
+                    return false;
                 }
 
-                // If all conditions pass, include the company in filtered data
                 return true;
             });
 
-            console.log("Filtered Data:", filteredData);
             setFilteredCompanies(filteredData);
         }
     }, [isFiltering, userData, companyData]);
 
     const toggleFiltering = () => {
         const newFilteringState = !isFiltering;
-        setIsFiltering(newFilteringState); // Update the filtering state
-
-        // Store the filtering state in local storage
+        setIsFiltering(newFilteringState);
         localStorage.setItem('filteringState', JSON.stringify(newFilteringState));
+    };
+
+    const handleSearch = (e) => {
+        const searchTerm = e.target.value;
+        setSearchTerm(searchTerm);
+        const searchedCompanies = companyData.filter(company =>
+            company.companyInformation.company_name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCompanies(searchedCompanies);
     };
 
     return (
         <div className="container mx-auto mt-8">
-            <div className="flex items-center justify-center mb-4">
-                <input
-                    type="text"
-                    placeholder="Search by company name"
-                    className="border border-gray-500 rounded-md py-2 px-4 mr-2 w-64"
-                    value={searchTerm}
-                    onChange={e => setSearchTerm(e.target.value)}
-                />
-                <button className="bg-gray-300 text-blue-600 rounded-full p-2" onClick={toggleFiltering}>
-                    {isFiltering ? 'Turn Off Filtering' : 'Turn On Filtering'}
-                </button>
+            <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                    <p className="text-sm text-gray-600 mr-2">Filter companies according to your criteria:</p>
+                    <label className={companycss.switch}>
+                        <input className={companycss.cb} type="checkbox" checked={isFiltering} onChange={toggleFiltering} />
+                        <span className={companycss.toggle}>
+                            <span className={companycss.left}>off</span>
+                            <span className={companycss.right}>on</span>
+                        </span>
+                    </label>
+                </div>
+                <div className="flex items-center">
+                    <input
+                        type="text"
+                        placeholder="Search by company name"
+                        className="border border-gray-500 rounded-md py-2 px-4 mr-2 w-64"
+                        value={searchTerm}
+                        onChange={handleSearch}
+                    />
+                    <button className="bg-indigo-500 text-white px-4 py-2 rounded-md" >
+                        Search
+                    </button>
+                </div>
+                <div className="ml-4">
+                    <h6 className="text-lg font-bold text-gray-800">Total Companies: <span className="text-indigo-700">{dataCount}</span></h6>
+                </div>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredCompanies.length === 0 ? (
-                    <p className="text-center text-gray-600">You are not eligible for any of these companies.</p>
+                    <p className="text-center text-gray-600">No companies found.</p>
                 ) : (
                     filteredCompanies.map(company => (
                         <div key={company._id} className="bg-white p-4 rounded-lg border border-gray-300 shadow-md flex flex-col justify-between">
@@ -133,11 +148,10 @@ function Companydata() {
                                 <p className="text-gray-600 mb-2">Marks: {company.companyInformation.marks}</p>
                                 <p className="text-gray-600 mb-2">CGPA: {company.companyInformation.cgpa}</p>
                                 <p className="text-gray-600 mb-4">Backlogs: {company.companyInformation.backlogs}</p>
-                                {/* Use Link to navigate to a new page with the company information */}
                                 <Link
                                     to={{
                                         pathname: `/company/${company.companyInformation.company_name}`,
-                                        search: `?companyName=${company.companyInformation.company_name}` // Pass the companyName as query parameter
+                                        search: `?companyName=${company.companyInformation.company_name}`
                                     }}
                                     className="w-full text-white bg-indigo-700 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-600 rounded text-lg md:text-base flex items-center justify-center"
                                 >

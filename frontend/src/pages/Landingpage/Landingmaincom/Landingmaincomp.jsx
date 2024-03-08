@@ -5,6 +5,7 @@ import landingimg from '../../../@/images/landingimg.png';
 import Landingcss from './Landingmaincomp.module.css';
 import Landingimg2 from '../../../@/images/landingimg2.png'
 import Landingimg3 from '../../../@/images/landingimg3.png';
+import companyimg from '../../../@/images/companyimg.jpg';
 
 function Landingmaincomp() {
     const [marks, setMarks] = useState('');
@@ -56,13 +57,16 @@ function Landingmaincomp() {
                         <div className={Landingcss.headline}>
                             <h1>Analyse Yourself</h1>
                             <h1 style={{ color: '#0C47BD' }}>By Industry Standards</h1>
-                            <button className={Landingcss.bttn}>
-                                <a href="#maincomp"><span>Get Started</span></a>
-                                <svg width="34" height="34" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
-                                    <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
-                                </svg>
-                            </button>
+
+                            <a href="#maincomp">
+                                <button className={Landingcss.bttn}>
+                                    <span>Get Started</span>
+                                    <svg width="34" height="34" viewBox="0 0 74 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <circle cx="37" cy="37" r="35.5" stroke="black" stroke-width="3"></circle>
+                                        <path d="M25 35.5C24.1716 35.5 23.5 36.1716 23.5 37C23.5 37.8284 24.1716 38.5 25 38.5V35.5ZM49.0607 38.0607C49.6464 37.4749 49.6464 36.5251 49.0607 35.9393L39.5147 26.3934C38.9289 25.8076 37.9792 25.8076 37.3934 26.3934C36.8076 26.9792 36.8076 27.9289 37.3934 28.5147L45.8787 37L37.3934 45.4853C36.8076 46.0711 36.8076 47.0208 37.3934 47.6066C37.9792 48.1924 38.9289 48.1924 39.5147 47.6066L49.0607 38.0607ZM25 38.5L48 38.5V35.5L25 35.5V38.5Z" fill="black"></path>
+                                    </svg>
+                                </button>
+                            </a>
                         </div>
                         <div className={Landingcss.headline2}>
                             <div class="flex justify-space">
@@ -267,6 +271,27 @@ function Landingmaincomp() {
                         <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
                             <img className="object-cover object-center rounded" alt="hero" src={Landingimg3} />
                         </div>
+                    </div>
+                    <div id="logreg">
+                        <section class="text-gray-600 body-font">
+                            <h1 className="title-font sm:text-4xl text-3xl mt-5 mb-0 font-bold text-gray-900 text-center">For Company Login</h1>
+                            <div class="container mx-auto flex px-5 py-20 md:flex-row flex-col items-center">
+                                <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
+                                    <img class="object-cover object-center rounded" alt="hero" src={companyimg} />
+                                </div>
+                                <div class="lg:flex-grow md:w-1/2 lg:pl-24 md:pl-16 flex flex-col md:items-start md:text-left items-center text-center">
+                                    <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">To Use This Platform Effectively
+                                        <br class="hidden lg:inline-block" />Please Login For <span className='text-red-600'>Companies</span>
+                                    </h1>
+                                    <p class="mb-8 leading-relaxed">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium quaerat enim, rem natus commodi illum labore vitae exercitationem maxime quis mollitia beatae vel vero molestias nobis officia facere, aliquid ratione ipsum! Sapiente, aut nemo!</p>
+                                    <div class="flex justify-center">
+                                        <Link to="/companylogin"><button class="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">LogIn</button>
+                                        </Link>
+                                        <Link to="/companyregister"><button class="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">Register</button></Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
                 </section>
             </div>

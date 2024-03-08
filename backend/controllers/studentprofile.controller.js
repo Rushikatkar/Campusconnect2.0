@@ -1,3 +1,4 @@
+const fs = require('fs');
 const StudentProfileModel = require("../models/studentprofileModel");
 const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
@@ -17,10 +18,19 @@ const studentProfileController = async (req, res) => {
             return res.status(400).json({ error: "Avatar file is required" });
         }
 
-        // Upload image to Cloudinary
+        // Check if resume file is provided
+        const resumeFile = req.files?.resume[0];
+        if (!resumeFile) {
+            return res.status(400).json({ error: "Resume file is required" });
+        }
+
+        // Upload image to Cloudinary (if needed)
         const avatar = await uploadOnCloudinary(avatarLocalPath);
 
-        // Create StudentProfileModel object with form data and image URL from Cloudinary
+        // Read resume file and convert to binary data
+        const resumeData = fs.readFileSync(resumeFile.path);
+
+        // Create StudentProfileModel object with form data and resume file
         const input = new StudentProfileModel({
             userId,
             student_name,
@@ -33,7 +43,11 @@ const studentProfileController = async (req, res) => {
             diploma_backlogs,
             degree_cgpa,
             degree_backlogs,
-            avatar: avatar.url // Assuming the field in the schema is named "avatar"
+            avatar: avatar.url, // Assuming the field in the schema is named "avatar"
+            resume: {
+                data: resumeData,
+                contentType: resumeFile.mimetype
+            }
         });
 
         // Save the data to the database
@@ -46,6 +60,7 @@ const studentProfileController = async (req, res) => {
         res.status(500).json({ error: "An error occurred while saving data" });
     }
 };
+
 const findStudentProfileController = async (req, res) => {
     try {
         const { userId } = req.query; // Retrieve userId from query parameters

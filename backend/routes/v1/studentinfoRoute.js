@@ -15,6 +15,10 @@ router.route("/studentprofile").post(
         {
             name:"avatar",
             maxCount:1
+        },
+        {
+            name:"resume",
+            maxCount:1
         }
     ]),
     studentProfileController
