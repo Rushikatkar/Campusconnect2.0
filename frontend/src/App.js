@@ -17,6 +17,9 @@ import AdminLandingpage from './pages/AdminMainpage/AdminLandingpage/AdminLandin
 import Companysignup from './components/signup/CompanySignup';
 import CompanyLogin from './components/login/CompanyLogin';
 import Companymaincomp from './pages/Companypage/Companymaincomp/Companymaincomp';
+import Jobsection from './pages/Companypage/Jobsection/Jobsection';
+import CampusJob from './pages/StudentMainpage/Jobs/CampusJob/CampusJob';
+import AdminJob from './pages/AdminMainpage/AdminJobSection/AdminJob';
 
 function App() {
   return (
@@ -33,14 +36,19 @@ function App() {
       <Route path='/viewprofile' element={<Viewprofile/>}/>
       <Route path="/company/:company_name" element={<CompanyDetail/>} />
       <Route path='/jobs' element={<ViewJobs/>}/>
+      <Route path='/campusjobs' element={<CampusJob/>}/>
+
 
       <Route path='/adminlogin' element={<AdminLogin/>}/>
       <Route path='/adminsignup' element={<AdminSignup/>}/>
       <Route path='/admin' element={<AdminLandingpage/>}/>
+      <Route path='/adminjob' element={<AdminJob/>}/>
+
 
       <Route path='/companyregister' element={<Companysignup/>}/>
       <Route path='/companylogin' element={<CompanyLogin/>}/>
       <Route path='/company' element={<Companymaincomp/>}/>
+      <Route path='/createjob' element={<Jobsection/>}/>
 
 
 

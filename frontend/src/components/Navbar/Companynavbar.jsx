@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-function AdminNavbar() {
+function CompanyNavbar() {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     const toggleProfile = () => {
@@ -21,16 +21,16 @@ function AdminNavbar() {
     return (
         <nav className="bg-blue-900 p-2">
             <div className="container mx-auto flex items-center justify-between">
-                <Link to="/admin" className="text-white text-2xl font-bold">
+                <Link to="/company" className="text-white text-2xl font-bold">
                     CampusConnect
                 </Link>
 
                 <div className="flex-grow flex justify-center space-x-14">
-                    <Link to="/admin" className="text-white hover:text-gray-300">
-                        View Students
+                    <Link to="/company" className="text-white hover:text-gray-300">
+                        View College
                     </Link>
-                    <Link to="/adminjob" className="text-white hover:text-gray-300">
-                        campus Placements
+                    <Link to="/createjob" className="text-white hover:text-gray-300">
+                        Create Job Opening
                     </Link>
                     {/* <Link to="#" className="text-white hover:text-gray-300">
                         Jobs
@@ -97,11 +97,11 @@ function AdminNavbar() {
             {/* Responsive menu for small screens */}
             <div className="hidden md:hidden">
                 <div className="flex flex-col items-center mt-2 space-y-2">
-                    <Link to="/admin" className="text-white hover:text-gray-300">
-                        View Students
+                    <Link to="/company" className="text-white hover:text-gray-300">
+                        View College
                     </Link>
-                    <Link to="/adminjob" className="text-white hover:text-gray-300">
-                        Campus Placements
+                    <Link to="/createjob" className="text-white hover:text-gray-300">
+                        Create Job Opening
                     </Link>
                     {/* <Link to="#" className="text-white hover:text-gray-300">
                         Jobs
@@ -150,4 +150,4 @@ function AdminNavbar() {
     );
 }
 
-export default AdminNavbar;
+export default CompanyNavbar;

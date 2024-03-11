@@ -2,6 +2,9 @@ const asyncHandler = require("../utils/asyncHandler.js");
 const {ApiError} = require("../utils/ApiError.js");
 const Company = require("../models/company.model.js");
 const ApiResponse = require("../utils/ApiResponse.js");
+const Admin = require('../models/admin.model.js');
+const CampusJob = require('../models/campusjob.model.js');
+
 const jwt = require("jsonwebtoken");
 
 const generateAccessAndRefereshTokens = async (userId) => {
@@ -90,7 +93,76 @@ const loginCompany = asyncHandler(async (req, res) => {
         .json(new ApiResponse(200, { company: loggedInCompany, accessToken, refreshToken }, "Company logged In Successfully"));
 });
 
+
+const getAllAdmins = async (req, res) => {
+    try {
+        const admins = await Admin.find({});// Exclude password and refreshToken from response
+        res.status(200).json({ success: true, admins });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+
+const createJob = async (req, res) => {
+    try {
+        // Extract job data from request body
+        const {
+            type,
+            jobURL,
+            company,
+            company_url,
+            location,
+            title,
+            description,
+            how_to_apply,
+            company_logo,
+            college_name,
+            department,
+            hscmarks,
+            cgpa,
+            backlogs// Add collegename parameter
+        } = req.body;
+
+        // Set the current date and time
+        const created_at = new Date();
+
+        // Create a new job document
+        const newJob = new CampusJob({
+            type,
+            jobURL,
+            created_at,
+            company,
+            company_url,
+            location,
+            title,
+            description,
+            how_to_apply,
+            company_logo,
+            college_name,
+            department,
+            hscmarks,
+            cgpa,
+            backlogs
+        });
+
+        // Save the job document to the database
+        await newJob.save();
+
+        console.log('Job information created:', newJob);
+
+        res.status(201).json({ success: true, message: 'Job information created successfully', newJob });
+    } catch (error) {
+        console.error('Error creating job information:', error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+
+
 module.exports = {
     registerCompany,
     loginCompany,
+    getAllAdmins,
+    createJob,
 };

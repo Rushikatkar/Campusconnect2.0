@@ -35,6 +35,9 @@ function StudentNavbar() {
                     <Link to="/jobs" className="text-white hover:text-gray-300">
                         Give Test
                     </Link>
+                    <Link to="/campusjobs" className="text-white hover:text-gray-300">
+                        Campus Placement
+                    </Link>
                     {/* <Link to="/makeprofile" className="text-white hover:text-gray-300">
                         Make Profile
                     </Link> */}
@@ -102,6 +105,9 @@ function StudentNavbar() {
                     </Link>
                     <Link to="/jobs" className="text-white hover:text-gray-300">
                         Give Test
+                    </Link>
+                    <Link to="/campusjobs" className="text-white hover:text-gray-300">
+                        Campus Placement
                     </Link>
                     {/* <Link to="/makeprofile" className="text-white hover:text-gray-300">
                         Make Profile

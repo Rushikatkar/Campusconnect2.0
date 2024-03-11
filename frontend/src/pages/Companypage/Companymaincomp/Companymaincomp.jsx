@@ -1,9 +1,13 @@
 import React from 'react'
+import CompanyNavbar from '../../../components/Navbar/Companynavbar'
+import Collegeinfo from '../Collegeinfo/Collegeinfo'
 
 function Companymaincomp() {
     return (
         <div>
-            Hello here is company
+
+            <CompanyNavbar />
+            <Collegeinfo />
         </div>
     )
 }

@@ -43,7 +43,7 @@ const JobCard = ({ job }) => {
                 </button>
             </div>
             <div className="p-4 bg-gray-100 border-t border-gray-200">
-                <a href={job.how_to_apply} target="_blank" rel="noopener noreferrer" className="block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300">Apply Here</a>
+                <a href={job.jobURL} target="_blank" rel="noopener noreferrer" className="block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300">Apply Here</a>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const jobsmodelschema = new mongoose.Schema({
-    id: String,
+const jobsModelSchema = new mongoose.Schema({
+    id : String,
     type: String,
     url: String,
     created_at: Date,
@@ -11,9 +11,10 @@ const jobsmodelschema = new mongoose.Schema({
     title: String,
     description: String,
     how_to_apply: String,
-    company_logo: String
+    company_logo: String,
+    // collegename: String  // Adding collegename field
 });
 
-const jobsmodel = mongoose.model('jobs', jobsmodelschema);
+const jobsModel = mongoose.model('jobs', jobsModelSchema);
 
-module.exports = jobsmodel;
+module.exports = jobsModel;
