@@ -52,17 +52,27 @@ export default function CampusJob() {
         console.log("userId is " + userId);
         if (userId) {
             try {
-                await axios.post('http://localhost:5000/api/campusjobapply', { userId, jobId });
-                setNotificationMessage('Applied in campus successfully'); // Set notification message
-                // Reset notification message after 3 seconds
-                setTimeout(() => {
-                    setNotificationMessage(null);
-                }, 3000);
+                const response = await axios.post('http://localhost:5000/api/campusjobapply', { userId, jobId });
+                if (response.data.success === false && response.data.message === 'You have already applied for this job') {
+                    // Show alert message if user has already applied
+                    setNotificationMessage('You have already applied for this job');
+                    setTimeout(() => {
+                        setNotificationMessage(null);
+                    }, 3000);
+                    console.log(response.data);
+                } else {
+                    setNotificationMessage('Applied in campus successfully'); // Set notification message
+                    // Reset notification message after 3 seconds
+                    setTimeout(() => {
+                        setNotificationMessage(null);
+                    }, 3000);
+                }
             } catch (error) {
                 console.error('Error applying in campus:', error);
             }
         }
     };
+
 
     const JobCard = ({ job }) => {
         const [showFullDescription, setShowFullDescription] = useState(false);

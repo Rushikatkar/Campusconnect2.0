@@ -7,7 +7,6 @@ import css from "./Login.module.css";
 export default function AdminLogin() {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
 
@@ -17,7 +16,7 @@ export default function AdminLogin() {
         try {
             const response = await axios.post(
                 "http://localhost:5000/api/v1/admins/login", // Changed API endpoint for admin login
-                { email, username, password },
+                { email, password },
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -67,14 +66,6 @@ export default function AdminLogin() {
                             className={css.forminput}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <input
-                            type="text" // Change type to text for username
-                            placeholder="Username"
-                            className={css.forminput}
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
                             required
                         />
                         <input

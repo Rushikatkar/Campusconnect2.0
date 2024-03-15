@@ -6,7 +6,12 @@ const studentProfileController = async (req, res) => {
     try {
         const { userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs } = req.body;
 
-        console.log(student_name);
+        // Check if userId already exists in the database
+        const existingProfile = await StudentProfileModel.findOne({ userId });
+        if (existingProfile) {
+            return res.status(400).json({ success: false, message: 'You already created profile. You can update instead' });
+        }
+
         // Check if required fields are empty
         if ([userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs].some((field) => field === undefined || field.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
@@ -60,6 +65,7 @@ const studentProfileController = async (req, res) => {
         res.status(500).json({ error: "An error occurred while saving data" });
     }
 };
+
 
 const findStudentProfileController = async (req, res) => {
     try {

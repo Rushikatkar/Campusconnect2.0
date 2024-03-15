@@ -5,6 +5,13 @@ const createCampusJobApply = async (req, res) => {
     try {
         const { userId, jobId } = req.body;
 
+        // Check if the user has already applied for this job
+        const existingApplication = await CampusJobApply.findOne({ userId, jobId });
+
+        if (existingApplication) {
+            return res.status(201).json({ success: false, message: 'You have already applied for this job' });
+        }
+
         // Create a new student job entry
         const newCampusJobApply = new CampusJobApply({
             userId: userId,

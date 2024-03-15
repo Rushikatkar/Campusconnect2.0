@@ -12,7 +12,7 @@ const Notification = ({ message }) => {
     }, []);
 
     return (
-        <div className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-md shadow-md ${isVisible ? 'block' : 'hidden'}`}>
+        <div className={`fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-md shadow-md ${isVisible ? 'block' : 'hidden'}`}>
             {message}
         </div>
     );

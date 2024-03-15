@@ -54,14 +54,14 @@ const registerAdmin = asyncHandler(async (req, res) => {
 });
 
 const loginAdmin = asyncHandler(async (req, res) => {
-    const { email, username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username && !email) {
-        throw new ApiError(400, "Username or email is required");
+    if (!email) {
+        throw new ApiError(400, "email is required");
     }
 
     const admin = await Admin.findOne({
-        $or: [{ username }, { email }]
+        $or: [{ email }]
     });
 
     if (!admin) {

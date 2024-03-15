@@ -82,16 +82,23 @@ const UserProfileForm = () => {
                 },
             });
 
+            const responseData = await response.json();
+
             if (response.ok) {
                 console.log('Form submitted successfully');
                 navigate('/viewprofile');
             } else {
-                console.error('Failed to submit form');
+                if (responseData.success === false && responseData.message) {
+                    alert(responseData.message);
+                } else {
+                    console.error('Failed to submit form');
+                }
             }
         } catch (error) {
             console.error('Error submitting form:', error);
         }
     };
+
 
     return (
         <>
