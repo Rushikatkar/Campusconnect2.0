@@ -20,6 +20,8 @@ import Companymaincomp from './pages/Companypage/Companymaincomp/Companymaincomp
 import Jobsection from './pages/Companypage/Jobsection/Jobsection';
 import CampusJob from './pages/StudentMainpage/Jobs/CampusJob/CampusJob';
 import AdminJob from './pages/AdminMainpage/AdminJobSection/AdminJob';
+import CreatedAllJobs from './pages/Companypage/CreatedAllJobs/CreatedAllJobs';
+import JobCandidatesPage from './pages/Companypage/CreatedAllJobs/Jobcandidatepage/JobCandidatePage';
 
 function App() {
   return (
@@ -49,6 +51,9 @@ function App() {
       <Route path='/companylogin' element={<CompanyLogin/>}/>
       <Route path='/company' element={<Companymaincomp/>}/>
       <Route path='/createjob' element={<Jobsection/>}/>
+      <Route path='/createdjobs' element={<CreatedAllJobs/>}/>
+      <Route path="/job/:joobId" element={<JobCandidatesPage/>} />
+
 
 
 

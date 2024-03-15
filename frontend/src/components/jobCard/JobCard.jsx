@@ -42,8 +42,9 @@ const JobCard = ({ job }) => {
                     {showFullDescription ? 'View Less' : 'View More'}
                 </button>
             </div>
-            <div className="p-4 bg-gray-100 border-t border-gray-200">
-                <a href={job.jobURL} target="_blank" rel="noopener noreferrer" className="block text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300">Apply Here</a>
+            <div className="p-4 bg-gray-100 border-t border-gray-200 flex justify-between">
+                <a href={job.jobURL} target="_blank" rel="noopener noreferrer" className="text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300">Apply On Company Site</a>
+                <button className="text-white hover:text-white text-sm font-semibold focus:outline-none bg-green-500 hover:bg-green-600 py-2 px-4 rounded-md transition duration-300">Apply in Campus</button>
             </div>
         </div>
     );

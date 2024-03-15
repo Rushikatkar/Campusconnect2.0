@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import CompanyNavbar from '../../../components/Navbar/Companynavbar';
 import Footer from '../../../components/Footer/Footer';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const departmentsList = [
     'Computer Science Engineering',
@@ -11,6 +13,16 @@ const departmentsList = [
     'Electronics and Communication Engineering',
     // Add more departments as needed
 ];
+
+const getUserIdFromToken = () => {
+    const accessToken = Cookies.get('accessToken');
+    if (accessToken) {
+        const decodedToken = jwtDecode(accessToken);
+        console.log('userid is ' + decodedToken._id);
+        return decodedToken._id;
+    }
+    return null;
+};
 
 export default function Jobsection() {
     const [formData, setFormData] = useState({
@@ -27,7 +39,8 @@ export default function Jobsection() {
         department: [],
         hscmarks: '',
         cgpa: '',
-        backlogs: ''
+        backlogs: '',
+        userId: getUserIdFromToken() // Include userId in the form data
     });
 
     const [selectedDepartments, setSelectedDepartments] = useState([]);
@@ -70,7 +83,8 @@ export default function Jobsection() {
                 department: [],
                 hscmarks: '',
                 cgpa: '',
-                backlogs: ''
+                backlogs: '',
+                userId: getUserIdFromToken() // Reset userId after submission
             });
             setSelectedDepartments([]);
         } catch (error) {

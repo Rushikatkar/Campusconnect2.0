@@ -32,6 +32,9 @@ function CompanyNavbar() {
                     <Link to="/createjob" className="text-white hover:text-gray-300">
                         Create Job Opening
                     </Link>
+                    <Link to="/createdjobs" className="text-white hover:text-gray-300">
+                        Created Jobs
+                    </Link>
                     {/* <Link to="#" className="text-white hover:text-gray-300">
                         Jobs
                     </Link>
@@ -102,6 +105,9 @@ function CompanyNavbar() {
                     </Link>
                     <Link to="/createjob" className="text-white hover:text-gray-300">
                         Create Job Opening
+                    </Link>
+                    <Link to="/createdjobs" className="text-white hover:text-gray-300">
+                        Created Jobs
                     </Link>
                     {/* <Link to="#" className="text-white hover:text-gray-300">
                         Jobs

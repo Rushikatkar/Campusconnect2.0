@@ -108,6 +108,7 @@ const createJob = async (req, res) => {
     try {
         // Extract job data from request body
         const {
+            userId,
             type,
             jobURL,
             company,
@@ -129,6 +130,7 @@ const createJob = async (req, res) => {
 
         // Create a new job document
         const newJob = new CampusJob({
+            userId,
             type,
             jobURL,
             created_at,
@@ -158,6 +160,23 @@ const createJob = async (req, res) => {
     }
 };
 
+const getAllCampusJobsByUserId = async (req, res) => {
+    try {
+        // Extract userId from request parameters or body
+        const { userId } = req.query; // Assuming userId is provided as a request parameter
+
+        // Query the database to find all campus job records with the provided userId
+        const campusJobs = await CampusJob.find({ userId });
+
+        // Return the matching records as a response
+        res.status(200).json(campusJobs);
+    } catch (error) {
+        // Handle any errors that occur during the database query
+        console.error('Error fetching campus jobs:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 
 module.exports = {
@@ -165,4 +184,5 @@ module.exports = {
     loginCompany,
     getAllAdmins,
     createJob,
+    getAllCampusJobsByUserId,
 };

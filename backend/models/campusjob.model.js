@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const campusjobSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Assuming there's a User model to reference
+        required: true
+    },
     type: String,
     jobURL: String,
     created_at: Date,
