@@ -55,6 +55,12 @@ export default function AdminJob() {
         fetchData();
     }, []);
 
+    const handleViewCandidates = (jobId) => {
+        console.log('View Candidates for job:', jobId);
+        // Here you can perform further actions, such as making an API call with the jobId
+        window.location.href = `/jobs/${jobId}`;
+    };
+
     return (
         <>
             <div>
@@ -73,7 +79,7 @@ export default function AdminJob() {
                                         <h2 className='text-center text-2xl'>Current Job Openings in College</h2>
                                         {/* Render campus job data using JobCard component */}
                                         {campusJobData.jobs.map(job => (
-                                            <CustomJobCard key={job._id} job={job} />
+                                            <CustomJobCard key={job._id} job={job} onViewCandidates={handleViewCandidates} />
                                         ))}
                                     </div>
                                 )}

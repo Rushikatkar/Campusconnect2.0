@@ -4,7 +4,7 @@ const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
 const studentProfileController = async (req, res) => {
     try {
-        const { userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs } = req.body;
+        const { userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs, github_url, linkedin_url, portfolio_url, interested_domain,number_of_project_done } = req.body;
 
         // Check if userId already exists in the database
         const existingProfile = await StudentProfileModel.findOne({ userId });
@@ -52,7 +52,12 @@ const studentProfileController = async (req, res) => {
             resume: {
                 data: resumeData,
                 contentType: resumeFile.mimetype
-            }
+            },
+            github_url,
+            linkedin_url,
+            portfolio_url,
+            interested_domain,
+            number_of_project_done
         });
 
         // Save the data to the database
@@ -85,7 +90,26 @@ const findStudentProfileController = async (req, res) => {
     }
 };
 
+const findStudent = async (req, res) => {
+    try {
+        const { userId } = req.body; // Retrieve userId from query parameters
+        console.log("Searching for user with ID:", userId);
+
+        const userProfile = await StudentProfileModel.findOne({ userId });
+        
+        if (!userProfile) {
+            return res.status(404).json({ error: "User profile not found" });
+        }
+
+        res.status(200).json({ userProfile });
+    } catch (error) {
+        console.error("Error finding user profile:", error);
+        res.status(500).json({ error: "An error occurred while searching for user profile" });
+    }
+};
+
 module.exports = {
     studentProfileController,
     findStudentProfileController,
+    findStudent
 };

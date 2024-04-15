@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const CustomJobCard = ({ job }) => {
+const CustomJobCard = ({ job, onViewCandidates }) => {
     const [showAllDetails, setShowAllDetails] = useState(false);
 
     const toggleDetails = () => {
@@ -39,9 +39,7 @@ const CustomJobCard = ({ job }) => {
                 </button>
             </div>
             <div className="px-4 py-2">
-                <button className="block mx-auto w-full text-center bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
-                    View Status
-                </button>
+                <button onClick={() => onViewCandidates(job._id)} className="text-white hover:text-white text-sm font-semibold focus:outline-none bg-green-500 hover:bg-green-600 py-2 px-4 rounded-md transition duration-300">View Status</button>
             </div>
         </div>
     );

@@ -22,6 +22,21 @@ const ProfileSchema = new mongoose.Schema({
     resume: {
         data: Buffer, // Store binary data
         contentType: String // Mime type of the file
+    },
+    github_url : {
+        type: String,
+    },
+    linkedin_url:{
+        type: String,
+    },
+    portfolio_url:{
+        type: String,
+    },
+    interested_domain:{
+        type: String,
+    },
+    number_of_project_done:{
+        type: Number,
     }
 });
 

@@ -105,6 +105,22 @@ const Viewprofile = () => {
                                 <label className="block text-gray-700 text-sm font-bold mb-2">Student Name</label>
                                 <p>{userData.student_name}</p>
                             </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">GitHub URL</label>
+                                <a className='text-blue-700' href={userData.github_url}>{userData.github_url}</a>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">LinkedIn URL</label>
+                                <a className='text-blue-700' href={userData.linkedin_url}>{userData.linkedin_url}</a>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">Personal Portfolio</label>
+                                <a className='text-blue-700' href={userData.portfolio_url}>{userData.portfolio_url}</a>
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">Interested Domain</label>
+                                <p>{userData.interested_domain}</p>
+                            </div>
                             {userData.resume && (
                                 <div className="mb-4">
                                     <label className="block text-gray-700 text-sm font-bold mb-2">Resume</label>
@@ -146,6 +162,11 @@ const Viewprofile = () => {
                             <div className="mb-4">
                                 <label className="block text-gray-700 text-sm font-bold mb-2">Degree Backlogs</label>
                                 <p>{userData.degree_backlogs}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                <label className="block text-gray-700 text-sm font-bold mb-2">Number Of Project Done</label>
+                                <p>{userData.number_of_project_done}</p>
                             </div>
                         </div>
                     </div>

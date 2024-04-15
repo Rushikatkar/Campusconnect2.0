@@ -36,7 +36,12 @@ const UserProfileForm = () => {
         degreeCGPA: '',
         degreeBacklogs: '',
         avatar: null,
-        resume: null // New field for resume file
+        resume: null, // New field for resume file,
+        github_url: '',
+        linkedin_url: '',
+        portfolio_url: '',
+        interested_domain: '',
+        number_of_project_done: ''
     });
 
     const handleChange = (e) => {
@@ -52,6 +57,11 @@ const UserProfileForm = () => {
             diplomaBacklogs: 'diploma_backlogs',
             degreeCGPA: 'degree_cgpa',
             degreeBacklogs: 'degree_backlogs',
+            github_url: 'github_url',
+            linkedin_url: 'linkedin_url',
+            portfolio_url: 'portfolio_url',
+            interested_domain: 'interested_domain',
+            number_of_project_done: 'number_of_project_done'
         };
 
         if (name === 'avatar' || name === 'resume') { // Handling both avatar and resume fields
@@ -275,6 +285,78 @@ const UserProfileForm = () => {
                         >
                             Save Profile
                         </button>
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="degreeBacklogs">
+                            GitHub URL
+                        </label>
+                        <input
+                            type="string"
+                            id="github_url"
+                            name="github_url"
+                            value={formData.github_url}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Enter GitHub URL"
+                            required
+                        />
+                    </div><div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="degreeBacklogs">
+                            LinkedIn_URL
+                        </label>
+                        <input
+                            type="string"
+                            id="linkedin_url"
+                            name="linkedin_url"
+                            value={formData.linkedin_url}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Enter linkedin URL"
+                            required
+                        />
+                    </div><div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="degreeBacklogs">
+                            Portfolio URL
+                        </label>
+                        <input
+                            type="string"
+                            id="portfolio_url"
+                            name="portfolio_url"
+                            value={formData.portfolio_url}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Enter Portfolio URL"
+                            required
+                        />
+                    </div>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="degreeCGPA">
+                            Interested Domain
+                        </label>
+                        <input
+                            type="string"
+                            id="degrinterested_domaineeCGPA"
+                            name="interested_domain"
+                            value={formData.interested_domain}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Enter Interested Domain"
+                            required
+                        />
+                    </div><div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="degreeCGPA">
+                            Number Of Project Done
+                        </label>
+                        <input
+                            type="number"
+                            id="number_of_project_done"
+                            name="number_of_project_done"
+                            value={formData.number_of_project_done}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Number Of Project Done"
+                            required
+                        />
                     </div>
                 </form>
             </div>

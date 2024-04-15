@@ -1,17 +1,19 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Companynavbar from '../../../../components/Navbar/Companynavbar';
+import AdminNavbar from '../../../../components/Navbar/AdminNavbar'
 import Footer from '../../../../components/Footer/Footer';
 import Notification from '../../../../components/Notification/Notification';
 
-const JobCandidatePage = () => {
+const JobCandidatePageforAdmin = () => {
     const jobId = window.location.pathname.split('/').pop();
     const [jobData, setJobData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [notificationMessage, setNotificationMessage] = useState('');
     const [showNotification, setShowNotification] = useState(false);
     const [selectedCandidates, setSelectedCandidates] = useState([]);
+    const [rejectedCandidates, setRejectedCandidates] = useState([]);
+    const [selectedPopupVisible, setSelectedPopupVisible] = useState(false);
+    const [rejectedPopupVisible, setRejectedPopupVisible] = useState(false);
 
     useEffect(() => {
         axios.post(`http://localhost:5000/api/jobappied`, { jobId })
@@ -43,46 +45,6 @@ const JobCandidatePage = () => {
         URL.revokeObjectURL(url);
     };
 
-    const handleSelect = async (userId) => {
-        try {
-            const response = await axios.post('http://localhost:5000/api/v1/company/selectstudent', { userId, jobId });
-            if (response.data.success === false && response.data.message === 'Student already selected for this job') {
-                setNotificationMessage('Student already selected for this job');
-            } else {
-                setNotificationMessage('Student selected successfully');
-            }
-        } catch (error) {
-            console.error('Error selecting student:', error);
-            setNotificationMessage('Error selecting student');
-        } finally {
-            setShowNotification(true);
-            setTimeout(() => {
-                setShowNotification(false);
-                setNotificationMessage('');
-            }, 3000);
-        }
-    };
-
-    const handleReject = async (userId) => {
-        try {
-            const response = await axios.post('http://localhost:5000/api/v1/company/rejectstudent', { userId, jobId });
-            if (response.data.success === false && response.data.message === 'Student already rejected for this job') {
-                setNotificationMessage('Student already rejected for this job');
-            } else {
-                setNotificationMessage('Student rejected successfully');
-            }
-        } catch (error) {
-            console.error('Error rejecting student:', error);
-            setNotificationMessage('Error rejecting student');
-        } finally {
-            setShowNotification(true);
-            setTimeout(() => {
-                setShowNotification(false);
-                setNotificationMessage('');
-            }, 3000);
-        }
-    };
-
     const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
         const byteCharacters = atob(b64Data);
         const byteArrays = [];
@@ -105,7 +67,7 @@ const JobCandidatePage = () => {
             const userIds = Array.isArray(response.data.data) ? response.data.data : [];
 
             if (userIds.length === 0) {
-                console.log('No userIds found in the response data.');
+                setSelectedPopupVisible(true);
                 return;
             }
 
@@ -122,18 +84,52 @@ const JobCandidatePage = () => {
         }
     };
 
+    const handleViewRejectedStudents = async () => {
+        try {
+            const response = await axios.post('http://localhost:5000/api/v1/company/rejectedstudents', { jobId });
+
+            const userIds = Array.isArray(response.data.data) ? response.data.data : [];
+
+            if (userIds.length === 0) {
+                setRejectedPopupVisible(true);
+                return;
+            }
+
+            const studentDetailsPromises = userIds.map(userId =>
+                axios.post('http://localhost:5000/api/findstudent', { userId })
+            );
+
+            const studentDetailsResponses = await Promise.all(studentDetailsPromises);
+            const studentDetails = studentDetailsResponses.map(response => response.data.userProfile);
+
+            setRejectedCandidates(studentDetails);
+        } catch (error) {
+            console.error('Error fetching rejected students or finding students:', error);
+        }
+    };
+
     const closePopup = () => {
         setSelectedCandidates([]);
+        setRejectedCandidates([]);
+        setSelectedPopupVisible(false);
+        setRejectedPopupVisible(false);
     };
 
     return (
         <>
             <div>
-                <Companynavbar />
+                <AdminNavbar />
             </div>
             <div className="container mx-auto mt-8">
                 <h2 className="text-2xl font-semibold mb-6">Student Profiles Applied For This Job</h2>
-                <button onClick={handleViewSelectedStudents}>View Selected Students</button>
+                <div className="flex space-x-4 mb-4">
+                    <button onClick={handleViewSelectedStudents} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        View Selected Students
+                    </button>
+                    <button onClick={handleViewRejectedStudents} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        View Rejected Students
+                    </button>
+                </div>
                 {selectedCandidates.length > 0 && (
                     <div className="popup">
                         <div className="popup-content">
@@ -145,6 +141,39 @@ const JobCandidatePage = () => {
                                     {/* Add more student information here */}
                                 </div>
                             ))}
+                        </div>
+                    </div>
+                )}
+
+                {rejectedCandidates.length > 0 && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <span className="close" onClick={closePopup}>&times;</span>
+                            {rejectedCandidates.map(student => (
+                                <div key={student._id} className="student-info">
+                                    <h3 className="text-lg font-semibold mb-1">Student Name: {student.student_name}</h3>
+                                    <p className="text-gray-600 mb-2">College Name: {student.college_name}</p>
+                                    {/* Add more student information here */}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {selectedPopupVisible && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <span className="close" onClick={closePopup}>&times;</span>
+                            <p>No selected students found.</p>
+                        </div>
+                    </div>
+                )}
+
+                {rejectedPopupVisible && (
+                    <div className="popup">
+                        <div className="popup-content">
+                            <span className="close" onClick={closePopup}>&times;</span>
+                            <p>No rejected students found.</p>
                         </div>
                     </div>
                 )}
@@ -202,15 +231,6 @@ const JobCandidatePage = () => {
                                         </div>
                                     )}
                                 </div>
-                                <div>
-                                    <button onClick={() => handleSelect(student.userId)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
-                                        Select
-                                    </button>
-                                    <button onClick={() => handleReject(student.userId)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                        Reject
-                                    </button>
-
-                                </div>
                             </div>
                         ))}
                     </div>
@@ -226,5 +246,5 @@ const JobCandidatePage = () => {
     );
 };
 
-export default JobCandidatePage;
+export default JobCandidatePageforAdmin;
 
