@@ -26,6 +26,9 @@ import CreateAdminProfile from './pages/AdminMainpage/AdminProfile/CreateAdminPr
 import ViewAdminProfile from './pages/AdminMainpage/AdminProfile/ViewAdminProfile/ViewAdminProfile';
 import UpdateAdminProfile from './pages/AdminMainpage/AdminProfile/UpdateAdminProfile/UpdateAdminProfile';
 import JobCandidatePageforAdmin from './pages/Companypage/CreatedAllJobs/jobcandidatepageforadmin/JobCandidatePageforAdmin';
+import CampuscompanySignup from './components/signup/CampuscompanySignup';
+import CampusCompanylogin from './components/login/CampusCompanylogin';
+import AdminPanel from './pages/CampusCompanyAdmin/AdminPanel/AdminPanel';
 
 function App() {
   return (
@@ -64,6 +67,9 @@ function App() {
       <Route path="/job/:joobId" element={<JobCandidatesPage/>} />
 
 
+      <Route path='/campusregister' element={<CampuscompanySignup/>}/>
+      <Route path='/campuslogin' element={<CampusCompanylogin/>}/>
+      <Route path='/admindashboard' element={<AdminPanel/>}/>
 
 
     </Routes>

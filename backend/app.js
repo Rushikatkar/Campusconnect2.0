@@ -19,6 +19,7 @@ app.use('/api',studentroute);
 const userRouter =require('./routes/v1/user.route');
 const adminRouter=require('./routes/v1/admin.route');
 const companyRouter=require('./routes/v1/company.route');
+const campusRouter= require('./routes/v1/campus.route');
 // const healthcheckRouter =require("./routes/healthcheck.routes.js");
 // const tweetRouter =require("./routes/tweet.routes.js");
 // const subscriptionRouter =require("./routes/subscription.routes.js");
@@ -33,6 +34,7 @@ const companyRouter=require('./routes/v1/company.route');
 app.use("/api/v1/users", userRouter)
 app.use("/api/v1/admins",adminRouter)
 app.use("/api/v1/company",companyRouter)
+app.use("/api/v1/campus", campusRouter);
 // app.use("/api/v1/tweets", tweetRouter)
 // app.use("/api/v1/subscriptions", subscriptionRouter)
 // app.use("/api/v1/videos", videoRouter)
