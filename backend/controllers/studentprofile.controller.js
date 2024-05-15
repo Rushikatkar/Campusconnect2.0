@@ -4,7 +4,7 @@ const { uploadOnCloudinary } = require("../utils/cloudinary.js");
 
 const studentProfileController = async (req, res) => {
     try {
-        const { userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs, github_url, linkedin_url, portfolio_url, interested_domain,number_of_project_done } = req.body;
+        const { userId, email , student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs, github_url, linkedin_url, portfolio_url, interested_domain,number_of_project_done } = req.body;
 
         // Check if userId already exists in the database
         const existingProfile = await StudentProfileModel.findOne({ userId });
@@ -13,7 +13,7 @@ const studentProfileController = async (req, res) => {
         }
 
         // Check if required fields are empty
-        if ([userId, student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs].some((field) => field === undefined || field.trim() === "")) {
+        if ([userId, email , student_name, date_of_birth, address, college_name, marksofssc, marksofhsc, diploma_cgpa, diploma_backlogs, degree_cgpa, degree_backlogs].some((field) => field === undefined || field.trim() === "")) {
             return res.status(400).json({ error: "All fields are required" });
         }
 
@@ -38,6 +38,7 @@ const studentProfileController = async (req, res) => {
         // Create StudentProfileModel object with form data and resume file
         const input = new StudentProfileModel({
             userId,
+            email,
             student_name,
             date_of_birth,
             address,

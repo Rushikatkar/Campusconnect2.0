@@ -6,6 +6,7 @@ const ProfileSchema = new mongoose.Schema({
         ref: 'User', // Reference to the User model if needed
         required: true
     },
+    email: String,
     student_name: String,
     date_of_birth: Date,
     address: String,

@@ -43,13 +43,23 @@ const JobCandidatePage = () => {
         URL.revokeObjectURL(url);
     };
 
-    const handleSelect = async (userId) => {
+    const handleSelect = async (userId, email) => {
         try {
             const response = await axios.post('http://localhost:5000/api/v1/company/selectstudent', { userId, jobId });
             if (response.data.success === false && response.data.message === 'Student already selected for this job') {
                 setNotificationMessage('Student already selected for this job');
+            } else if (response.data.success === false && response.data.message === 'Student already rejected for this job') {
+                setNotificationMessage('Student already rejected for this job');
             } else {
                 setNotificationMessage('Student selected successfully');
+
+                // Send email to the selected user
+                const emailData = {
+                    toEmail: email, // Replace this with the user's email
+                    subject: 'Congratulations!! You are selected in the interview process',
+                    htmlContent: '<p>Congratulations!! You are selected in the interview process. All the other details will be share with you soon.</p>',
+                };
+                await axios.post('http://localhost:5000/api/email/send-email', emailData);
             }
         } catch (error) {
             console.error('Error selecting student:', error);
@@ -63,13 +73,23 @@ const JobCandidatePage = () => {
         }
     };
 
-    const handleReject = async (userId) => {
+
+    const handleReject = async (userId, email) => {
         try {
             const response = await axios.post('http://localhost:5000/api/v1/company/rejectstudent', { userId, jobId });
             if (response.data.success === false && response.data.message === 'Student already rejected for this job') {
                 setNotificationMessage('Student already rejected for this job');
+            } else if (response.data.success === false && response.data.message === 'Student already selected for this job') {
+                setNotificationMessage('Student already selected for this job');
             } else {
                 setNotificationMessage('Student rejected successfully');
+                // Send email to the selected user
+                const emailData = {
+                    toEmail: email, // Replace this with the user's email
+                    subject: 'You are Rejected in the interview process',
+                    htmlContent: '<p>Unfortunatnly, we are not forward with you application.</p>',
+                };
+                await axios.post('http://localhost:5000/api/email/send-email', emailData);
             }
         } catch (error) {
             console.error('Error rejecting student:', error);
@@ -203,10 +223,10 @@ const JobCandidatePage = () => {
                                     )}
                                 </div>
                                 <div>
-                                    <button onClick={() => handleSelect(student.userId)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
+                                    <button onClick={() => handleSelect(student.userId, student.email)} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2">
                                         Select
                                     </button>
-                                    <button onClick={() => handleReject(student.userId)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                    <button onClick={() => handleReject(student.userId, student.email)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                                         Reject
                                     </button>
 
@@ -227,4 +247,3 @@ const JobCandidatePage = () => {
 };
 
 export default JobCandidatePage;
-

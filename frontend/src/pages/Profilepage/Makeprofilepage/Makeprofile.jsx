@@ -25,6 +25,7 @@ const UserProfileForm = () => {
 
     const [formData, setFormData] = useState({
         userId: '',
+        email: '',
         studentName: '',
         dateOfBirth: '',
         address: '',
@@ -47,6 +48,7 @@ const UserProfileForm = () => {
     const handleChange = (e) => {
         const { name, value, files } = e.target;
         const backendVariableNames = {
+            email: 'email',
             studentName: 'student_name',
             dateOfBirth: 'date_of_birth',
             address: 'address',
@@ -118,6 +120,21 @@ const UserProfileForm = () => {
             <div className="max-w-md mt-4 mx-auto p-8 bg-white shadow-md rounded-md">
                 <h2 className="text-2xl font-semibold mb-6">User Profile</h2>
                 <form onSubmit={handleSubmit}>
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="studentName">
+                            Email
+                        </label>
+                        <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            className="w-full border border-gray-300 p-2 rounded-md"
+                            placeholder="Enter student email"
+                            required
+                        />
+                    </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="studentName">
                             Student Name

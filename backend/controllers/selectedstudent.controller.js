@@ -18,6 +18,11 @@ const saveSelectedstudent = async (req, res) => {
             return res.status(201).json({ success: false, message: 'Student already selected for this job' });
         }
 
+        const existingRejection = await RejectedStudent.findOne({ userId, jobId });
+        if (existingRejection) {
+            return res.status(201).json({ success: false, message: 'Student already rejected for this job' });
+        }
+
         // Create a new selection
         const newSelection = new Selection({ userId, jobId });
 
@@ -46,6 +51,11 @@ const rejectStudent = async (req, res) => {
             return res.status(201).json({ success: false, message: 'Student already rejected for this job' });
         }
 
+        const existingSelection = await Selection.findOne({ userId, jobId });
+        if (existingSelection) {
+            return res.status(201).json({ success: false, message: 'Student already selected for this job' });
+        }
+        
         // Create a new rejection
         const newRejection = new RejectedStudent({ userId, jobId });
 
