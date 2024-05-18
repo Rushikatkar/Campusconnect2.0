@@ -35,8 +35,87 @@ const searchJobsByCollege = async (req, res) => {
     }
 };
 
+// Controller function to save a new job record
+const saveJobRecord = async (req, res) => {
+    try {
+      const {
+        id,
+        type,
+        url,
+        company,
+        company_url,
+        location,
+        title,
+        description,
+        how_to_apply,
+        // collegename
+      } = req.body;
+  
+      // Create new job record object
+      const newJob = new jobsmodel({
+        id,
+        type,
+        url,
+        created_at: new Date(), // Automatically set the current date and time
+        company,
+        company_url,
+        location,
+        title,
+        description,
+        how_to_apply,
+        // collegename
+      });
+  
+      // Save the job record to the database
+      await newJob.save();
+  
+      res.status(201).json({ message: 'Job record saved successfully' });
+    } catch (error) {
+      console.error('Error saving job record:', error);
+      res.status(500).json({ error: 'An error occurred while saving the job record' });
+    }
+  };
+  
+// Controller function to update a job record by ID
+const updateJobRecord = async (req, res) => {
+    try {
+        const { id, ...updateData } = req.body; // Destructure id and remaining fields from the request body
+
+        const updatedJob = await jobsmodel.findOneAndUpdate({ id }, updateData, { new: true });
+
+        if (!updatedJob) {
+            return res.status(404).json({ error: 'Job record not found' });
+        }
+
+        res.json({ message: 'Job record updated successfully', job: updatedJob });
+    } catch (error) {
+        console.error('Error updating job record:', error);
+        res.status(500).json({ error: 'An error occurred while updating the job record' });
+    }
+};
+
+// Controller function to delete a job record by ID
+const deleteJobRecord = async (req, res) => {
+    try {
+        const { _id } = req.body; // Get the id from the request body
+
+        const deletedJob = await jobsmodel.findOneAndDelete({ _id });
+
+        if (!deletedJob) {
+            return res.status(404).json({ error: 'Job record not found' });
+        }
+
+        res.json({ message: 'Job record deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting job record:', error);
+        res.status(500).json({ error: 'An error occurred while deleting the job record' });
+    }
+};
 
 module.exports = {
     getjobs,
-    searchJobsByCollege
+    searchJobsByCollege,
+    saveJobRecord,
+    updateJobRecord,
+    deleteJobRecord
 };

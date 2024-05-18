@@ -6,7 +6,7 @@ import Landingcss from './Landingmaincomp.module.css';
 import Landingimg2 from '../../../@/images/landingimg2.png'
 import Landingimg3 from '../../../@/images/landingimg3.png';
 import companyimg from '../../../@/images/companyimg.jpg';
-
+import CampusConnectLogo from '../../../@/images/CampusConnectLogoFinal.png';
 function Landingmaincomp() {
     const [marks, setMarks] = useState('');
     const [cgpa, setCgpa] = useState('');

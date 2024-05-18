@@ -76,6 +76,7 @@
 import React, { useState } from 'react';
 import Button from '../../@/components/Button';
 import axios from 'axios';
+import CampusConnectLogo from '../../@/images/CampusConnectLogoFinal.png';
 
 function Navbar({ onSearchResult }) {
     const [input, setInput] = useState('');

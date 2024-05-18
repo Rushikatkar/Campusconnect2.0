@@ -31,8 +31,8 @@ const companyInformationSchema = new Schema({
   },
   // New field for image data
   image: {
-    data: Buffer,
-    contentType: String
+    url: String,
+    public_id: String
   }
 });
 

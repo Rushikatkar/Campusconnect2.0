@@ -11,7 +11,7 @@ const jobsModelSchema = new mongoose.Schema({
     title: String,
     description: String,
     how_to_apply: String,
-    company_logo: String,
+    // company_logo: String,
     // collegename: String  // Adding collegename field
 });
 

@@ -109,8 +109,19 @@ const findStudent = async (req, res) => {
     }
 };
 
+const fetchAllEmails = async (req, res) => {
+    try {
+        const emails = await StudentProfileModel.find({ email: { $exists: true, $ne: null } }, 'email'); // Find all profiles with email field present and not null
+        res.status(200).json({ emails });
+    } catch (error) {
+        console.error("Error fetching emails:", error);
+        res.status(500).json({ error: "An error occurred while fetching emails" });
+    }
+};
+
 module.exports = {
     studentProfileController,
     findStudentProfileController,
-    findStudent
+    findStudent,
+    fetchAllEmails
 };

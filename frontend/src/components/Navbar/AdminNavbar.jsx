@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import CampusConnectLogo from '../../@/images/CampusConnectLogoFinal.png';
 
 function AdminNavbar() {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -21,9 +22,12 @@ function AdminNavbar() {
     return (
         <nav className="bg-blue-900 p-2">
             <div className="container mx-auto flex items-center justify-between">
-                <Link to="/admin" className="text-white text-2xl font-bold">
+                {/* <Link to="/admin" className="text-white text-2xl font-bold">
                     CampusConnect
-                </Link>
+                </Link> */}
+                <div className="h-16 flex items-center justify-center">
+                    <Link to="/admin" rel="noopener noreferrer"><img src={CampusConnectLogo} alt="Demo Logo" className="h-8" /></Link>
+                </div>
 
                 <div className="flex-grow flex justify-center space-x-14">
                     <Link to="/admin" className="text-white hover:text-gray-300">

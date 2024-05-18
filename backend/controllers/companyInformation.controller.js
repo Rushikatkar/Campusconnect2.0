@@ -1,4 +1,7 @@
+const fs = require('fs');
+
 const CompanyInformation = require('../models/companyInformation.model');
+const { uploadOnCloudinary } = require('../utils/cloudinary');
 
 // Controller function to save company information with image
 const saveCompanyInformation = async (req, res) => {
@@ -13,9 +16,17 @@ const saveCompanyInformation = async (req, res) => {
       eligibleCriterias,
       questionsAsked,
       whereToApply,
-      image // Assuming image is sent as base64 encoded data
     } = req.body;
 
+    // Check if avatar file is provided
+    const avatarFilePath = req.files?.avatar[0]?.path;
+    if (!avatarFilePath) {
+      return res.status(400).json({ error: 'Avatar file is required' });
+    }
+
+    // Upload image to Cloudinary
+    const avatarUploadResult = await uploadOnCloudinary(avatarFilePath);
+    // Create new company information object
     const companyInfo = new CompanyInformation({
       company_name,
       cgpa,
@@ -27,12 +38,16 @@ const saveCompanyInformation = async (req, res) => {
       questionsAsked,
       whereToApply,
       image: {
-        data: Buffer.from(image, 'base64'), // Convert base64 data to buffer
-        contentType: 'image/jpeg' // Update content type based on the image format
-      }
+        url: avatarUploadResult.url,
+        public_id: avatarUploadResult.public_id,
+      },
     });
 
+    // Save the company information to the database
     await companyInfo.save();
+
+    // Remove the local avatar file after uploading to Cloudinary
+    // fs.unlinkSync(avatarFilePath);
 
     res.status(201).json({ message: 'Company information saved successfully' });
   } catch (error) {
@@ -64,7 +79,7 @@ const updateCompanyInformation = async (req, res) => {
 const deleteCompanyInformation = async (req, res) => {
   try {
     const { _id } = req.body; // Assuming ID is in req.body as _id
-
+    console.log(_id);
     const deletedCompanyInfo = await CompanyInformation.findByIdAndDelete(_id);
 
     if (!deletedCompanyInfo) {
@@ -78,8 +93,19 @@ const deleteCompanyInformation = async (req, res) => {
   }
 };
 
+const getAllCompanyInformation = async (req, res) => {
+  try {
+    const companyInfoList = await CompanyInformation.find(); // Fetch all documents from the collection
+    res.json(companyInfoList); // Return the list of company information
+  } catch (error) {
+    console.error('Error fetching company information:', error);
+    res.status(500).json({ error: 'An error occurred while fetching company information' });
+  }
+};
+
 module.exports = {
   saveCompanyInformation,
   updateCompanyInformation,
-  deleteCompanyInformation
+  deleteCompanyInformation,
+  getAllCompanyInformation
 };
