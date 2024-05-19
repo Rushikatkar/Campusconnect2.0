@@ -20,9 +20,9 @@ const generateAccessAndRefereshTokens = async (userId) => {
 };
 
 const registerAdmin = asyncHandler(async (req, res) => {
-    const { fullName, email, username, password, collegeName } = req.body;
+    const { fullName, email, username, password, collegeName, contact } = req.body;
 
-    if ([fullName, email, username, password, collegeName].some((field) => field?.trim() === "")) {
+    if ([fullName, email, username, password, collegeName, contact].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "All fields are required");
     }
 
@@ -39,7 +39,8 @@ const registerAdmin = asyncHandler(async (req, res) => {
         email,
         password,
         username: username.toLowerCase(),
-        collegeName // Add collegeName to the admin creation
+        collegeName, // Add collegeName to the admin creation
+        contact
     });
 
     const { accessToken, refreshToken } = await generateAccessAndRefereshTokens(admin._id);

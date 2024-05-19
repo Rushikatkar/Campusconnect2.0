@@ -75,21 +75,33 @@ const studentProfileController = async (req, res) => {
 
 const findStudentProfileController = async (req, res) => {
     try {
-        const { userId } = req.query; // Retrieve userId from query parameters
+        const { userId } = req.query;
         console.log("Searching for user with ID:", userId);
 
         const userProfile = await StudentProfileModel.findOne({ userId });
-        
+
         if (!userProfile) {
             return res.status(404).json({ error: "User profile not found" });
         }
 
-        res.status(200).json({ userProfile });
+        // Convert resume data to a Base64 string
+        const resumeBase64 = userProfile.resume.data.toString('base64');
+
+        res.status(200).json({
+            userProfile: {
+                ...userProfile.toObject(),
+                resume: {
+                    data: resumeBase64,
+                    contentType: userProfile.resume.contentType
+                }
+            }
+        });
     } catch (error) {
         console.error("Error finding user profile:", error);
         res.status(500).json({ error: "An error occurred while searching for user profile" });
     }
 };
+
 
 const findStudent = async (req, res) => {
     try {

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'; // Correct import without destructuring
+import { saveAs } from 'file-saver'; // Correctly import file-saver
 import StudentNavbar from '../../../components/Navbar/StudentNavbar';
 import Footer from '../../../components/Footer/Footer';
 
@@ -13,7 +14,7 @@ const Viewprofile = () => {
         const getUserIdFromToken = () => {
             const accessToken = Cookies.get('accessToken');
             if (accessToken) {
-                const decodedToken = jwtDecode(accessToken);
+                const decodedToken = jwtDecode(accessToken); // Correct function call
                 console.log('userid is ' + decodedToken._id);
                 return decodedToken._id;
             }
@@ -38,54 +39,29 @@ const Viewprofile = () => {
         fetchData();
     }, []);
 
-    const handleDownload = async (base64Data, filename) => {
+    const isValidBase64 = (str) => {
+        const base64Regex = /^(?:[A-Za-z0-9+/]{4})*?(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+        return base64Regex.test(str);
+    };
+
+    const handleDownload = (base64Data, filename) => {
         try {
-            let base64String;
-
-            if (typeof base64Data === 'string') {
-                // If base64Data is already a string, use it directly
-                base64String = base64Data;
-            } else if (base64Data && Array.isArray(base64Data.data)) {
-                // If base64Data is an object with a 'data' array, convert it to a base64 string
-                base64String = base64Data.data.join('');
+            if (isValidBase64(base64Data)) {
+                const byteCharacters = atob(base64Data);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: 'application/pdf' });
+                saveAs(blob, filename); // Use file-saver to save the file
             } else {
-                throw new Error('Invalid base64Data format');
+                throw new Error('Invalid Base64 string');
             }
-
-            // Convert base64 string to ArrayBuffer
-            const byteCharacters = atob(base64String);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const arrayBuffer = byteArray.buffer;
-
-            // Create Blob from ArrayBuffer
-            const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
-
-            // Create URL for Blob
-            const url = window.URL.createObjectURL(blob);
-
-            // Create a link element for download
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-
-            // Append the link to the document body and trigger click event
-            document.body.appendChild(a);
-            a.click();
-
-            // Cleanup
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error('Error downloading PDF:', error);
         }
     };
-
-
-
 
     return (
         <>

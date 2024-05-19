@@ -101,53 +101,58 @@ const MainComponent = () => {
     };
 
     const viewResume = (resume) => {
-        // Create Blob from base64 string
-        const blob = b64toBlob(resume.data.data, resume.contentType);
-
-        // Create URL for the Blob
-        const url = URL.createObjectURL(blob);
-
-        // Open URL in a new tab
-        window.open(url, '_blank');
+        const blob = b64toBlob(resume.data, resume.contentType);
+        if (blob) {
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        } else {
+            console.error('Failed to create Blob from base64 data.');
+        }
     };
 
     const downloadResume = (resume) => {
-        // Create Blob from base64 string
-        const blob = b64toBlob(resume.data.data, resume.contentType);
+        const blob = b64toBlob(resume.data, resume.contentType);
+        if (blob) {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'resume.pdf');
 
-        // Create download link
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'resume.pdf');
+            document.body.appendChild(link);
+            link.click();
 
-        // Append link to body and trigger download
-        document.body.appendChild(link);
-        link.click();
-
-        // Clean up
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } else {
+            console.error('Failed to create Blob from base64 data.');
+        }
     };
+
 
     const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
-        const byteCharacters = atob(b64Data);
-        const byteArrays = [];
+        try {
+            const byteCharacters = atob(b64Data);
+            const byteArrays = [];
 
-        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            const slice = byteCharacters.slice(offset, offset + sliceSize);
+            for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                const slice = byteCharacters.slice(offset, offset + sliceSize);
 
-            const byteNumbers = new Array(slice.length);
-            for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
             }
 
-            const byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
+            return new Blob(byteArrays, { type: contentType });
+        } catch (error) {
+            console.error('Failed to convert base64 string to Blob:', error);
+            return null;
         }
-
-        return new Blob(byteArrays, { type: contentType });
     };
+
 
     const getTotalStudents = (studentsObj) => {
         let totalStudents = 0;
@@ -159,6 +164,7 @@ const MainComponent = () => {
 
     return (
         <>
+            {/* <StudentNavbar /> */}
             <div className="container mx-auto mt-8">
                 <h2 className="text-2xl font-semibold mb-6">Student Profile</h2>
                 <div className="mb-4">
@@ -190,7 +196,6 @@ const MainComponent = () => {
                     </ul>
                 </div>
 
-
                 <div className="grid gap-6">
                     {studentData.map(student => (
                         <div key={student._id} className="bg-white p-6 rounded-md shadow-md flex items-center">
@@ -206,7 +211,6 @@ const MainComponent = () => {
                                 <p className="text-gray-600 mb-2"><strong>Degree BACKLOG:</strong> {student.degree_backlogs}</p>
                                 <p className="text-gray-600 mb-2"><strong>Interested In:</strong> {student.interested_domain}</p>
                                 <p className="text-gray-600 mb-2"><strong>Total Projects Build:</strong> {student.number_of_project_done}</p>
-
                             </div>
 
                             {student.resume && student.resume.contentType && (
@@ -229,7 +233,6 @@ const MainComponent = () => {
                                         </button>
                                     </div>
                                 </div>
-
                             )}
 
                             <div className="ml-4">

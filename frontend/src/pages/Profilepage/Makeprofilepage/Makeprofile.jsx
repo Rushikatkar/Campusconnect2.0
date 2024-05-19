@@ -295,14 +295,7 @@ const UserProfileForm = () => {
                         </label>
                         <input type="file" id="resume" name="resume" onChange={handleChange} className="w-full border border-gray-300 p-2 rounded-md" />
                     </div>
-                    <div className="mt-6">
-                        <button
-                            type="submit"
-                            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none"
-                        >
-                            Save Profile
-                        </button>
-                    </div>
+
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="degreeBacklogs">
                             GitHub URL
@@ -374,6 +367,14 @@ const UserProfileForm = () => {
                             placeholder="Number Of Project Done"
                             required
                         />
+                    </div>
+                    <div className="mt-6">
+                        <button
+                            type="submit"
+                            className="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none"
+                        >
+                            Save Profile
+                        </button>
                     </div>
                 </form>
             </div>

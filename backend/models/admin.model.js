@@ -35,6 +35,9 @@ const userSchema = new Schema(
         },
         collegeName: {
             type: String  // Add collegeName field
+        },
+        contact: {
+            type: String
         }
     },
     {

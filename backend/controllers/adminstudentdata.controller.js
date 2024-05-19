@@ -17,7 +17,21 @@ const adminstudentdata = async (req, res) => {
         // Then sort based on marksofhsc in descending order
         data.sort((a, b) => b.marksofhsc - a.marksofhsc);
 
-        res.json(data);
+        // Convert resume data to a Base64 string for each student
+        const formattedData = data.map(student => {
+            const studentObj = student.toObject();
+
+            if (student.resume && student.resume.data) {
+                studentObj.resume = {
+                    data: student.resume.data.toString('base64'),
+                    contentType: student.resume.contentType
+                };
+            }
+
+            return studentObj;
+        });
+
+        res.json(formattedData);
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });

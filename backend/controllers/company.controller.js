@@ -96,12 +96,13 @@ const loginCompany = asyncHandler(async (req, res) => {
 
 const getAllAdmins = async (req, res) => {
     try {
-        const admins = await Admin.find({});// Exclude password and refreshToken from response
+        const admins = await Admin.find({}, '-password -refreshToken'); // Exclude password and refreshToken from response
         res.status(200).json({ success: true, admins });
     } catch (error) {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
+
 
 
 const createJob = async (req, res) => {
